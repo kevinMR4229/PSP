@@ -19,18 +19,18 @@ public class Padre {
 
 
         //Comparten consola
-        constructorPensador.inheritIO();
+        //constructorPensador.inheritIO();
         //Comparten consola
-        constructorAdivinador.inheritIO();
+        //constructorAdivinador.inheritIO();
         
 
 
         // Inico el proceso
         Process proceso1 = constructorPensador.start();
-        int codigoSalida1 = proceso1.waitFor();
+        
 
         // Inico el proceso
         Process proceso2 = constructorAdivinador.start();
-        int codigoSalida2 = proceso2.waitFor();
+        
     }
 }
