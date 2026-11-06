@@ -1,105 +1,97 @@
+
 package EjercicioAdivinarCarta;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.List;
-import java.util.Random;
+import java.io.*;
+import java.util.*;
 
 public class Hijo {
-    public static void main(String[] args) throws IOException, InterruptedException {
+
+    public static void main(String[] args)
+            throws IOException, InterruptedException {
+
         String comportamiento = args[0];
 
-        List<String> cartas = List.of(args[1], args[2], args[3]);
-
-        boolean acertado = false;
+        // Recibo las cartas que ha enviado el padre.
+        List<String> cartas = new ArrayList<>(
+                Arrays.asList(args).subList(1, args.length)
+        );
 
         Random random = new Random();
 
-        String cartaElegida;
+        // Streams para comunicarse con el padre.
+        BufferedReader reader = new BufferedReader(
+                new InputStreamReader(System.in)
+        );
 
+        PrintWriter writer = new PrintWriter(System.out, true);
 
-
-
-
-
-        // Comportamiento pensador
+        // COMPORTAMIENTO PENSADOR
         if (comportamiento.equals("pensador")) {
 
-            //Genero un numero random para elegir la carta
+            // Escoge una carta aleatoria.
             int indice = random.nextInt(cartas.size());
+            String cartaElegida = cartas.get(indice);
 
-            //guardo la carta
-            cartaElegida = cartas.get(indice);
+            // Avisa al padre sin revelar la carta.
+            writer.println("LISTO");
 
-            Thread.sleep(1000);
+            boolean acertado = false;
 
-            //aviso que ya ejigio la carta
-            System.out.println("LISTO");
-
-            BufferedReader reader = new BufferedReader(
-                        new InputStreamReader(System.in));
-
-
-            //Escucha al padre y le dice si acerto o no 
             while (!acertado) {
-                
+
+                // Recibe una carta del padre.
                 String respuestaPadre = reader.readLine();
 
                 if (respuestaPadre == null) {
                     break;
                 }
 
+                // Retraso de 1 a 2 segundos.
+                Thread.sleep(random.nextInt(1000, 2001));
+
+                // Comprueba la carta y responde al padre.
                 if (respuestaPadre.equals(cartaElegida)) {
-                    System.out.println("Acertaste");
+                    writer.println("SI");
                     acertado = true;
                 } else {
-                    System.out.println("Fallaste");
+                    writer.println("NO");
                 }
-
             }
-
         }
 
+        // COMPORTAMIENTO ADIVINADOR
+        else if (comportamiento.equals("adivinador")) {
 
+            boolean acertado = false;
 
+            while (!acertado && !cartas.isEmpty()) {
 
+                // Escoge aleatoriamente una carta disponible.
+                int indice = random.nextInt(cartas.size());
+                String cartaElegida = cartas.get(indice);
 
+                // Descarta la carta para no repetirla.
+                cartas.remove(indice);
 
-        // Comportamiento adivinador
-        if (comportamiento == "adivinador") {
+                // Envía su intento al padre.
+                writer.println(cartaElegida);
 
-            //Genero un numero random para elegir la carta
-            int indice = random.nextInt(cartas.size());
-
-            //guardo la carta
-            cartaElegida = cartas.get(indice);
-
-            Thread.sleep(1000);
-
-            //Manda la carta que eligio
-            System.out.println(cartaElegida);
-
-            BufferedReader reader = new BufferedReader(
-                        new InputStreamReader(System.in));
-
-
-            //Escucha al padre a ver si acerto
-            while (!acertado) {
-                
+                // Espera la respuesta del padre.
                 String respuestaPadre = reader.readLine();
 
                 if (respuestaPadre == null) {
                     break;
                 }
 
-                if (respuestaPadre.equals(cartaElegida)) {
-                    System.out.println("Acertaste");
+                if (respuestaPadre.equals("SI")) {
                     acertado = true;
-                } else {
-                    System.out.println("Fallaste");
+                } else if (respuestaPadre.equals("FIN")) {
+                    // Otro adivinador ha ganado.
+                    break;
+                } else if (respuestaPadre.equals("NO")) {
+                    // Espera aleatoria antes del siguiente intento.
+                    Thread.sleep(random.nextInt(500, 1501));
                 }
-
             }
         }
     }
