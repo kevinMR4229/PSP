@@ -9,7 +9,7 @@ class Tortuga implements Runnable {
         for (int paso = 1; paso <= 10; paso++) {
             System.out.println("Tortuga: paso " + paso);
             try {
-                Thread.sleep(200);   // va despacio pero no se para
+                Thread.sleep(200); // va despacio pero no se para
             } catch (InterruptedException e) {
             }
         }
@@ -17,8 +17,10 @@ class Tortuga implements Runnable {
     }
 }
 
-/* segunda forma: heredar de Thread.
-   Aquí la propia clase ya es un hilo, no hace falta pasarle ningún Runnable */
+/*
+ * segunda forma: heredar de Thread.
+ * Aquí la propia clase ya es un hilo, no hace falta pasarle ningún Runnable
+ */
 class Liebre extends Thread {
 
     public void run() {
@@ -31,7 +33,7 @@ class Liebre extends Thread {
                     System.out.println("Liebre:  se echa una siesta de " + siesta + " ms...");
                     Thread.sleep(siesta);
                 } else {
-                   Thread.sleep(50);   // el resto de pasos son rapidos
+                    Thread.sleep(50); // el resto de pasos son rapidos
                 }
             } catch (InterruptedException e) {
             }
@@ -52,8 +54,8 @@ class Ejemplo1_CarreraTortugas {
         System.out.println("Antes de start():   tortuga=" + tortuga.getState() + "   liebre=" + liebre.getState());
 
         System.out.println("¡Preparados, listos, ya!");
-        tortuga.start();   // start() es lo que lanza el hilo de verdad
-        liebre.start();    // si llamamos a run() directamente no se crea ningún hilo
+        tortuga.start(); // start() es lo que lanza el hilo de verdad
+        liebre.start(); // si llamamos a run() directamente no se crea ningún hilo
 
         // mientras siga viva alguna, el juez mira cómo van cada medio segundo
         while (tortuga.isAlive() || liebre.isAlive()) {
@@ -61,7 +63,8 @@ class Ejemplo1_CarreraTortugas {
             System.out.println("   [juez] tortuga=" + tortuga.getState() + "   liebre=" + liebre.getState());
         }
 
-        // aquí esperamos a que terminen los dos (ya han acabado, así que no espera nada)
+        // aquí esperamos a que terminen los dos (ya han acabado, así que no espera
+        // nada)
         tortuga.join();
         liebre.join();
 

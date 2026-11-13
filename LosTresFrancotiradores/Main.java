@@ -27,7 +27,6 @@ class Francotirador implements Runnable {
                 System.out.println("FALLO!");
             }
         }
-
     }
 
     public boolean isVerde() {
