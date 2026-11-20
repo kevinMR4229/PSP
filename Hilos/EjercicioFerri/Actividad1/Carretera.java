@@ -1,8 +1,8 @@
-package net.ddns.pablotic;
+package EjercicioFerri.Actividad1;
 
 /**
  *
- * @author PON_TU_NOMBRE_COMPLETO_AQUÍ
+ * @author KEVIN_MENDEZ_RODRIGUEZ
  */
 import java.util.Random;
 
@@ -13,12 +13,15 @@ public class Carretera extends Thread {
     private final int minTiempo;
     private final int maxTiempo;
     private final Random rand = new Random();
+    private final String colorTexto;
+    private final String colorConsola = "\u001B[0m";
 
-    public Carretera(String nombre, Muelle muelle, int minTiempo, int maxTiempo) {
+    public Carretera(String nombre, Muelle muelle, int minTiempo, int maxTiempo, String colorTexto) {
         super(nombre); // le das nombre al hilo, así lo reconoces en las trazas
         this.muelle = muelle;
         this.minTiempo = minTiempo;
         this.maxTiempo = maxTiempo;
+        this.colorTexto = colorTexto;
     }
 
     @Override
@@ -33,8 +36,8 @@ public class Carretera extends Thread {
                 int v = rand.nextInt(5) + 1;
 
                 // avisas por pantalla antes de dejarlo, asi la traza sale en orden
-                System.out.println("[" + getName() + "] llega " + nombreVehiculo(v)
-                        + " (" + v + (v == 1 ? " plaza" : " plazas") + ") al muelle " + muelle.getNombre());
+                System.out.println(colorTexto + "[" + getName() + "] llega " + nombreVehiculo(v)
+                        + " (" + v + (v == 1 ? " plaza" : " plazas") + ") al muelle " + muelle.getNombre() + colorConsola);
 
                 // lo dejas en el muelle (recurso compartido con el ferry)
                 muelle.agregarVehiculo(v);

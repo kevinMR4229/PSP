@@ -1,8 +1,8 @@
-package net.ddns.pablotic;
+package EjercicioFerri.Actividad1;
 
 /**
  *
- * @author PON_TU_NOMBRE_COMPLETO_AQUÍ
+ * @author KEVIN_MENDEZ_RODRIGUEZ
  */
 import java.util.ArrayList;
 import java.util.List;
@@ -28,25 +28,40 @@ public class Muelle {
 
     // la carretera deja un vehículo y avisas a quien esté esperando
     // decide si este método tiene que ser synchronized
-    public void agregarVehiculo(int v) {
+    public synchronized void agregarVehiculo(int v) {
         // ======================= COMPLETAR =======================
         // añades el vehículo al buffer
+        buffer.add(v);
         // despiertas a los hilos que esten esperando en este monitor (notifyAll)
+        notifyAll();
         // =========================================================
-        throw new UnsupportedOperationException("agregarVehiculo: sin implementar");
+        //throw new UnsupportedOperationException("agregarVehiculo: sin implementar");
     }
 
     // el ferry pide un vehículo que quepa en su hueco; si no hay ninguno, esperas
     // decide si este método tiene que ser synchronized
-    public int embarcar(int hueco) throws InterruptedException {
+    public synchronized int embarcar(int hueco) throws InterruptedException {
         // ======================= COMPLETAR =======================
         // usas buscarQueQuepa(hueco) para saber si hay algo que quepa (-1 si no)
         // si no hay nada que quepa, esperas con wait()
         // piensa si la condición va en un if o en un while
         // cuando haya uno, lo quitas del buffer con buffer.remove(Integer.valueOf(v))
         // devuelves el vehículo embarcado
+        int vehiculo = buscarQueQuepa(hueco);
+        while (vehiculo == -1) {
+            wait();
+            vehiculo = buscarQueQuepa(hueco);
+        }
+        //Luego de embarcar un vehiculo lo elimino del Muelle
+        for(int v=0; v<= buffer.size(); v++){
+            if (buffer.get(v) == vehiculo) {
+                buffer.remove(v);
+                break;
+            }
+        }
+        return vehiculo;
         // =========================================================
-        throw new UnsupportedOperationException("embarcar: sin implementar");
+        //throw new UnsupportedOperationException("embarcar: sin implementar");
     }
 
     // buscas el vehículo más grande que quepa en el hueco; -1 si no hay ninguno
